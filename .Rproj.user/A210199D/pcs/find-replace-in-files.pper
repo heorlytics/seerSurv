@@ -1,6 +1,6 @@
 {
     "dialog-state": {
-        "query": "seerTP",
+        "query": "0000-0000-0000-0005",
         "path": "",
         "regex": false,
         "caseSensitive": false,
@@ -9,7 +9,7 @@
         "useGitGrep": true,
         "excludeGitIgnore": false,
         "excludeFilePatterns": [],
-        "resultsCount": 59,
+        "resultsCount": 1,
         "errorCount": 0,
         "replaceErrors": "",
         "projectRelative": true

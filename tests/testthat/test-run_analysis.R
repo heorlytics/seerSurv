@@ -7,8 +7,6 @@
 skip_on_cran()
 skip_if_not_installed("flexsurv")
 
-data(lifetable_seer, package = "seerTP", envir = environment())
-
 s_lr <- c(1, 0.9959, 0.9886, 0.9831, 0.9783, 0.9754)
 s_dr <- c(1, 0.5491, 0.4396, 0.3945, 0.3630, 0.3410)
 

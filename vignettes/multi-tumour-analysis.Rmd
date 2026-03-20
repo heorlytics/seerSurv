@@ -1,5 +1,5 @@
 ---
-title: "Multi-Tumour Analysis and Sensitivity Analyses with seerTP"
+title: "Multi-Tumour Analysis and Sensitivity Analyses with seerSurv"
 author: "Sameer Mansoori, Shubhram Pandey, Rashi Rani, Barinder Singh, Murat Kurt"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -28,7 +28,7 @@ horizons (`"lifetime"`, `"20y"`, `"5y"`) and both information criteria
 (`"AIC"`, `"BIC"`).
 
 ```{r libs, message = FALSE}
-library(seerTP)
+library(seerSurv)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -161,14 +161,14 @@ all_results |>
 # Export combined results to CSV
 write.csv(
   all_results,
-  file      = "seerTP_all_results.csv",
+  file      = "seerSurv_all_results.csv",
   row.names = FALSE
 )
 
 # Export base-case to Excel
 openxlsx::write.xlsx(
   base,
-  file      = "seerTP_basecase.xlsx",
+  file      = "seerSurv_basecase.xlsx",
   sheetName = "Lifetime_AIC"
 )
 ```

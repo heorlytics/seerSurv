@@ -1,4 +1,4 @@
-url: https://pharmacoevidence.github.io/seerSurv/
+url: https://heorlytics.github.io/seerSurv/
 
 template:
   bootstrap: 5
@@ -17,7 +17,7 @@ navbar:
   components:
     github:
       icon: fab fa-github fa-lg
-      href: https://github.com/pharmacoevidence/seerSurv
+      href: https://github.com/heorlytics/seerSurv
 
 reference:
   - title: "Main analysis wrapper"

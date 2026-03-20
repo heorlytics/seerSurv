@@ -1,4 +1,4 @@
 library(testthat)
-library(seerTP)
+library(seerSurv)
 
-test_check("seerTP")
+test_check("seerSurv")

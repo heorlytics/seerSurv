@@ -2,8 +2,6 @@
 ## tests/testthat/test-background_mortality.R
 ## ============================================================================
 
-data(lifetable_seer, package = "seerTP", envir = environment())
-
 lt <- lifetable_seer
 lt$btrate_mix <- lt$Males * 0.58 + lt$Females * 0.42
 grid <- seq(0, 39, by = 1)

@@ -3,16 +3,16 @@ Title: Cancer Progression Transition Probabilities from Aggregate Survival Data
 Version: 0.1.0
 Authors@R: c(
     person("Sameer",    "Mansoori",  role = c("aut"),
-           comment = c(ORCID = "0000-0000-0000-0001")),
+           comment = c(ORCID = "0009-0002-6606-0244")),
     person("Shubhram",  "Pandey",    role = c("aut", "cre"),
-           email = "shubhram.pandey@pharmacoevidence.com",
-           comment = c(ORCID = "0000-0000-0000-0002")),
+           email = "shubhram.pandey@heorlytics.com",
+           comment = c(ORCID = "0009-0005-2303-1592")),
     person("Rashi",     "Rani",      role = "aut",
-           comment = c(ORCID = "0000-0000-0000-0003")),
+           comment = c(ORCID = "0009-0005-2303-1592")),
     person("Barinder",  "Singh",     role = "aut",
-           comment = c(ORCID = "0000-0000-0000-0004")),
+           comment = c(ORCID = "0009-0005-2303-1592")),
     person("Murat",     "Kurt",      role = "aut",
-           comment = c(ORCID = "0000-0000-0000-0005"))
+           comment = c(ORCID = "0009-0005-2303-1592"))
   )
 Description: Estimates long-term cancer progression transition probabilities
     after local/regional recurrence (LR) using state-transition models calibrated
@@ -32,13 +32,13 @@ Description: Estimates long-term cancer progression transition probabilities
     a transparent, reproducible benchmark for calibrating cost-effectiveness
     models that incorporate an LR state.
 License: MIT + file LICENSE
-URL: https://github.com/pharmacoevidence/seerSurv
-BugReports: https://github.com/pharmacoevidence/seerSurv/issues
+URL: https://github.com/heorlytics/seerSurv
+BugReports: https://github.com/heorlytics/seerSurv/issues
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
 LazyDataCompression: xz
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Depends:
     R (>= 4.1.0)
 Imports:
