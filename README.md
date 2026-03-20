@@ -1,8 +1,7 @@
 # seerSurv <img src="man/figures/logo.png" align="right" height="120" alt="seerSurv hex sticker" />
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/pharmacoevidence/seerSurv/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pharmacoevidence/seerSurv/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/pharmacoevidence/seerSurv/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pharmacoevidence/seerSurv?branch=main)
+[![R-CMD-check](https://github.com/heorlytics/seerSurv/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/heorlytics/seerSurv/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/seerSurv)](https://CRAN.R-project.org/package=seerSurv)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -20,9 +19,9 @@ Given five-year aggregate survival proportions for **local/regional recurrence
 
 | Symbol | Description |
 |---|---|
-| $P_{\text{LL}}$ | Monthly probability of remaining in LR |
-| $P_{\text{DL}}$ | Monthly probability of progressing from LR to DR |
-| $P_{\text{death}\mid\text{LR}}$ | Monthly probability of dying in LR ($1 - P_{\text{LL}} - P_{\text{DL}}$) |
+| P\_LL | Monthly probability of remaining in LR |
+| P\_DL | Monthly probability of progressing from LR to DR |
+| P\_death given LR | Monthly probability of dying in LR (1 - P\_LL - P\_DL) |
 
 Bundled data cover **11 cancer types** (Breast, Bladder, Colon & Rectum,
 Esophageal, Kidney, Liver, Lung, Melanoma, Ovarian, Pancreatic, Stomach).
@@ -37,7 +36,7 @@ install.packages("seerSurv")
 
 # Install the development version from GitHub
 # install.packages("pak")
-pak::pak("pharmacoevidence/seerSurv")
+pak::pak("heorlytics/seerSurv")
 ```
 
 ---
@@ -65,7 +64,7 @@ result <- run_tumour_analysis(
 )
 
 result
-#> # A tibble: 1 × 7
+#> # A tibble: 1 x 7
 #>     P_LL P_DL_approach2 P_Death_L_approach2 RMST_L_years RMST_D_years M_years M_months
 #>    <dbl>          <dbl>               <dbl>        <dbl>        <dbl>   <dbl>    <dbl>
 #> 1  0.999         0.0003               4e-04         17.2         3.15    14.1     169.
@@ -115,28 +114,28 @@ results <- tumour_data_seer |>
 
 ```
 Input: 5-year aggregate survival (LR and DR) + demographics
-     │
-     ▼
- prep_ipd()           ← convert to pseudo-IPD (probability-weighted)
-     │
-     ▼
- fit_models()         ← 6 parametric distributions (flexsurv)
-     │
-     ▼
- extract_ic() +       ← select top-k by AIC / BIC
- compute_weights()    ← assign relative-likelihood weights
-     │
-     ▼
- blend_survival()     ← weighted-average survival curve
-     │
-     ▼
- make_background_surv() ← multiply by US-CDC life-table survival
-     │
-     ▼
- run_tumour_analysis()  ← optimise P(LL) and P(DL), return tibble
+     |
+     v
+ prep_ipd()           <- convert to pseudo-IPD (probability-weighted)
+     |
+     v
+ fit_models()         <- 6 parametric distributions (flexsurv)
+     |
+     v
+ extract_ic() +       <- select top-k by AIC / BIC
+ compute_weights()    <- assign relative-likelihood weights
+     |
+     v
+ blend_survival()     <- weighted-average survival curve
+     |
+     v
+ make_background_surv() <- multiply by US-CDC life-table survival
+     |
+     v
+ run_tumour_analysis()  <- optimise P(LL) and P(DL), return tibble
 ```
 
-**P(LL)** is derived from the mean LR sojourn time (RMST differential).  
+**P(LL)** is derived from the mean LR sojourn time (RMST differential).
 **P(DL)** is estimated by minimising the relative sum-of-squares between the
 observed LR survival curve and its convolution approximation.
 
@@ -149,7 +148,7 @@ publication.
 
 | Dataset | Description |
 |---|---|
-| `lifetable_seer` | US-CDC annual death rates by age and sex (ages 0–100) |
+| `lifetable_seer` | US-CDC annual death rates by age and sex (ages 0-100) |
 | `tumour_data_seer` | SEER-17 5-year survival proportions for 11 cancer types |
 
 ---
@@ -172,7 +171,7 @@ citation("seerSurv")
 ## Contributing
 
 Bug reports and pull requests are welcome on
-[GitHub](https://github.com/pharmacoevidence/seerSurv/issues).
+[GitHub](https://github.com/heorlytics/seerSurv/issues).
 Please read the [contribution guidelines](CONTRIBUTING.md) before opening a
 pull request.
 

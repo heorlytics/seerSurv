@@ -3,6 +3,7 @@ url: https://heorlytics.github.io/seerSurv/
 template:
   bootstrap: 5
   bootswatch: flatly
+  math-rendering: mathjax
 
 home:
   title: "seerSurv — Cancer Recurrence Transition Probabilities"
@@ -15,6 +16,14 @@ navbar:
     left:  [intro, reference, articles, news]
     right: [search, github]
   components:
+    intro:
+      text: "Get Started"
+      href: articles/seerSurv-intro.html
+    articles:
+      text: "Articles"
+      menu:
+        - text: "Multi-Tumour Analysis"
+          href: articles/multi-tumour-analysis.html
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/heorlytics/seerSurv
@@ -55,11 +64,9 @@ reference:
 
 articles:
   - title: "Getting started"
-    navbar: ~
     contents:
       - seerSurv-intro
   - title: "Advanced usage"
-    navbar: "Advanced"
     contents:
       - multi-tumour-analysis
 
