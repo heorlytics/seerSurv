@@ -283,5 +283,5 @@ Aggregate Survival Data: An R Package for Health Economic Evaluations."
 SEER Program. National Cancer Institute. <https://seer.cancer.gov/>.
 
 Jackson C (2016). "flexsurv: A Platform for Parametric Survival Modelling
-in R." *Journal of Statistical Software*, **70**(8), 1–33.
+in R." *Journal of Statistical Software*, **70**(8), 1--33.
 doi:[10.18637/jss.v070.i08](https://doi.org/10.18637/jss.v070.i08).

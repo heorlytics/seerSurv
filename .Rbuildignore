@@ -1,5 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.claude$
 ^\.github$
 ^data-raw$
 ^cran-comments\.md$
@@ -11,3 +12,4 @@
 ^\.lintr$
 ^\.pre-commit-config\.yaml$
 ^CRAN-SUBMISSION$
+^LICENSE\.md$
