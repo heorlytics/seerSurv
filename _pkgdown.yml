@@ -18,6 +18,7 @@ navbar:
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/heorlytics/seerSurv
+      aria-label: GitHub repository
 
 reference:
   - title: "Main analysis wrapper"

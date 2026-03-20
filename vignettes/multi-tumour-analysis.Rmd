@@ -140,7 +140,7 @@ all_results |>
   pivot_wider(names_from = criterion, values_from = P_DL_approach2) |>
   ggplot(aes(x = AIC, y = BIC, label = Tumor)) +
   geom_point(size = 3, colour = "#E41A1C") +
-  ggrepel::geom_text_repel(size = 3, max.overlaps = 20) +
+  geom_text(size = 3, vjust = -0.6, hjust = 0.5) +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey50") +
   labs(
     title = "AIC- vs BIC-weighted P(DR) — Lifetime Horizon",
@@ -149,9 +149,6 @@ all_results |>
   ) +
   theme_minimal(base_size = 11)
 ```
-
-> **Note:** `ggrepel` is used for label placement above.  Install with
-> `install.packages("ggrepel")` if needed.
 
 ---
 
