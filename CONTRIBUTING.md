@@ -8,7 +8,7 @@ improvements, new features, and additional cancer-type data.
 ## Reporting bugs
 
 Please open an issue on
-[GitHub](https://github.com/pharmacoevidence/seerSurv/issues) and include:
+[GitHub](https://github.com/heorlytics/seerSurv/issues) and include:
 
 1. A minimal reproducible example (use `reprex::reprex()`).
 2. The output of `sessionInfo()`.

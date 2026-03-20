@@ -1,13 +1,12 @@
 ---
-title: "Introduction to seerTP: Cancer Recurrence Transition Probabilities"
+title: "Introduction to seerSurv: Cancer Recurrence Transition Probabilities"
 author: "Sameer Mansoori, Shubhram Pandey, Rashi Rani, Barinder Singh, Murat Kurt"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to seerTP}
+  %\VignetteIndexEntry{Introduction to seerSurv}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: references.bib
 ---
 
 ```{r setup, include = FALSE}
@@ -38,7 +37,7 @@ Trial-derived estimates are rarely available because clinical studies are
 typically powered for overall or disease-free survival, and LR follow-up is
 too short to observe the full recurrence cascade.
 
-**seerTP** fills this gap by deriving the three probabilities from aggregate
+**seerSurv** fills this gap by deriving the three probabilities from aggregate
 (population-level) survival data extracted from the
 [SEER-17 registry](https://seer.cancer.gov/), covering ten cancer types.
 
@@ -46,7 +45,7 @@ too short to observe the full recurrence cascade.
 
 ## Methodological overview
 
-```{r method-diagram, echo = FALSE, fig.cap = "seerTP workflow"}
+```{r method-diagram, echo = FALSE, fig.cap = "seerSurv workflow"}
 # Simple text diagram rendered as a figure caption placeholder
 ```
 
@@ -79,7 +78,7 @@ too short to observe the full recurrence cascade.
 ## Quickstart: single tumour type
 
 ```{r melanoma-demo, message = FALSE}
-library(seerTP)
+library(seerSurv)
 library(dplyr)
 
 data(lifetable_seer)

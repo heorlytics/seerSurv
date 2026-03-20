@@ -73,7 +73,7 @@ fit_models <- function(
   }
   # -------------------------------------------------------------------------- #
 
-  setNames(
+  mods <- setNames(
     lapply(dists, function(d) {
       tryCatch(
         flexsurv::flexsurvreg(
@@ -92,6 +92,6 @@ fit_models <- function(
       )
     }),
     dists
-  ) |>
-    Filter(Negate(is.null), x = _)
+  )
+  Filter(Negate(is.null), mods)
 }

@@ -52,14 +52,23 @@
 #' @seealso
 #' Useful links:
 #' \itemize{
-#'   \item \url{https://github.com/pharmacoevidence/seerSurv}
-#'   \item \url{https://github.com/pharmacoevidence/seerSurv/issues}
+#'   \item \url{https://github.com/heorlytics/seerSurv}
+#'   \item \url{https://github.com/heorlytics/seerSurv/issues}
 #' }
 #'
 #' @author
 #' Sameer Mansoori, Shubhram Pandey, Rashi Rani, Barinder Singh, Murat Kurt
 #'
-#' Maintainer: Shubhram Pandey \email{shubhram.pandey@@pharmacoevidence.com}
+#' Maintainer: Shubhram Pandey \email{shubhram.pandey@@heorlytics.com}
 #'
 #' @keywords internal
+#'
+#' @importFrom dplyr filter mutate select left_join bind_rows group_by summarise lead first
+#' @importFrom tibble tibble
+#' @importFrom purrr map_dbl map_dfc
+#' @importFrom tidyr unnest
+#' @importFrom survival Surv
+#' @importFrom flexsurv flexsurvreg
+#' @importFrom ggplot2 ggplot aes geom_line labs theme_minimal scale_colour_brewer theme element_text
+#' @importFrom rlang abort warn inform .data
 "_PACKAGE"
