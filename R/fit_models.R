@@ -73,13 +73,13 @@ fit_models <- function(
   }
   # -------------------------------------------------------------------------- #
 
-  mods <- setNames(
+  mods <- stats::setNames(
     lapply(dists, function(d) {
       tryCatch(
         flexsurv::flexsurvreg(
           survival::Surv(time, event) ~ 1,
           data    = ipd,
-          weights = weight,
+          weights = ipd[["weight"]],
           dist    = d
         ),
         error = function(e) {

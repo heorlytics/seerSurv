@@ -7,7 +7,8 @@
       "Read(//c/Program Files/R//**)",
       "Bash(\"/c/Program Files/R/R-4.5.2/bin/Rscript.exe\" data-raw/prepare_data.R)",
       "Bash(\"/c/Program Files/R/R-4.5.2/bin/Rscript.exe\" -e \"devtools::document\\(roclets = c\\(''rd'', ''collate'', ''namespace''\\)\\)\")",
-      "Bash(\"/c/Program Files/R/R-4.5.2/bin/Rscript.exe\" -e \"devtools::check\\(vignettes = FALSE, manual = FALSE\\)\")"
+      "Bash(\"/c/Program Files/R/R-4.5.2/bin/Rscript.exe\" -e \"devtools::check\\(vignettes = FALSE, manual = FALSE\\)\")",
+      "Bash(grep -E \"\\\\.\\(md|yml|yaml|Rmd\\)$\")"
     ]
   }
 }
