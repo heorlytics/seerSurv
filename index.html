@@ -6,7 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>seerSurv — Cancer Recurrence Transition Probabilities • seerSurv</title>
-<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -33,14 +39,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/seerSurv-intro.html">Get Started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/seerSurv-intro.html">Introduction to seerSurv: Cancer Recurrence Transition Probabilities</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Advanced</h6></li>
-    <li><a class="dropdown-item" href="articles/multi-tumour-analysis.html">Multi-Tumour Analysis and Sensitivity Analyses with seerSurv</a></li>
+<li><a class="dropdown-item" href="articles/multi-tumour-analysis.html">Multi-Tumour Analysis</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -78,16 +82,16 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mtext mathvariant="normal">LL</mtext></msub><annotation encoding="application/x-tex">P_{\text{LL}}</annotation></semantics></math></td>
+<td>P_LL</td>
 <td>Monthly probability of remaining in LR</td>
 </tr>
 <tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mtext mathvariant="normal">DL</mtext></msub><annotation encoding="application/x-tex">P_{\text{DL}}</annotation></semantics></math></td>
+<td>P_DL</td>
 <td>Monthly probability of progressing from LR to DR</td>
 </tr>
 <tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mtext mathvariant="normal">death</mtext><mo>∣</mo><mtext mathvariant="normal">LR</mtext></mrow></msub><annotation encoding="application/x-tex">P_{\text{death}\mid\text{LR}}</annotation></semantics></math></td>
-<td>Monthly probability of dying in LR (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><msub><mi>P</mi><mtext mathvariant="normal">LL</mtext></msub><mo>−</mo><msub><mi>P</mi><mtext mathvariant="normal">DL</mtext></msub></mrow><annotation encoding="application/x-tex">1 - P_{\text{LL}} - P_{\text{DL}}</annotation></semantics></math>)</td>
+<td>P_death given LR</td>
+<td>Monthly probability of dying in LR (1 - P_LL - P_DL)</td>
 </tr>
 </tbody>
 </table>
@@ -103,7 +107,7 @@
 <span></span>
 <span><span class="co"># Install the development version from GitHub</span></span>
 <span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"pharmacoevidence/seerSurv"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"heorlytics/seerSurv"</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
@@ -130,7 +134,7 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result</span></span>
-<span><span class="co">#&gt; # A tibble: 1 × 7</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 7</span></span>
 <span><span class="co">#&gt;     P_LL P_DL_approach2 P_Death_L_approach2 RMST_L_years RMST_D_years M_years M_months</span></span>
 <span><span class="co">#&gt;    &lt;dbl&gt;          &lt;dbl&gt;               &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1  0.999         0.0003               4e-04         17.2         3.15    14.1     169.</span></span></code></pre></div>
@@ -177,26 +181,26 @@
 <h2 id="methodology">Methodology<a class="anchor" aria-label="anchor" href="#methodology"></a>
 </h2>
 <pre><code>Input: 5-year aggregate survival (LR and DR) + demographics
-     │
-     ▼
- prep_ipd()           ← convert to pseudo-IPD (probability-weighted)
-     │
-     ▼
- fit_models()         ← 6 parametric distributions (flexsurv)
-     │
-     ▼
- extract_ic() +       ← select top-k by AIC / BIC
- compute_weights()    ← assign relative-likelihood weights
-     │
-     ▼
- blend_survival()     ← weighted-average survival curve
-     │
-     ▼
- make_background_surv() ← multiply by US-CDC life-table survival
-     │
-     ▼
- run_tumour_analysis()  ← optimise P(LL) and P(DL), return tibble</code></pre>
-<p><strong>P(LL)</strong> is derived from the mean LR sojourn time (RMST differential).<br><strong>P(DL)</strong> is estimated by minimising the relative sum-of-squares between the observed LR survival curve and its convolution approximation.</p>
+     |
+     v
+ prep_ipd()           &lt;- convert to pseudo-IPD (probability-weighted)
+     |
+     v
+ fit_models()         &lt;- 6 parametric distributions (flexsurv)
+     |
+     v
+ extract_ic() +       &lt;- select top-k by AIC / BIC
+ compute_weights()    &lt;- assign relative-likelihood weights
+     |
+     v
+ blend_survival()     &lt;- weighted-average survival curve
+     |
+     v
+ make_background_surv() &lt;- multiply by US-CDC life-table survival
+     |
+     v
+ run_tumour_analysis()  &lt;- optimise P(LL) and P(DL), return tibble</code></pre>
+<p><strong>P(LL)</strong> is derived from the mean LR sojourn time (RMST differential). <strong>P(DL)</strong> is estimated by minimising the relative sum-of-squares between the observed LR survival curve and its convolution approximation.</p>
 <p>Full details are provided in the companion vignette and the associated publication.</p>
 <hr>
 </div>
@@ -215,7 +219,7 @@
 <tbody>
 <tr class="odd">
 <td><code>lifetable_seer</code></td>
-<td>US-CDC annual death rates by age and sex (ages 0–100)</td>
+<td>US-CDC annual death rates by age and sex (ages 0-100)</td>
 </tr>
 <tr class="even">
 <td><code>tumour_data_seer</code></td>
@@ -239,7 +243,7 @@
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
 </h2>
-<p>Bug reports and pull requests are welcome on <a href="https://github.com/pharmacoevidence/seerSurv/issues" class="external-link">GitHub</a>. Please read the <a href="CONTRIBUTING.html">contribution guidelines</a> before opening a pull request.</p>
+<p>Bug reports and pull requests are welcome on <a href="https://github.com/heorlytics/seerSurv/issues" class="external-link">GitHub</a>. Please read the <a href="CONTRIBUTING.html">contribution guidelines</a> before opening a pull request.</p>
 <hr>
 </div>
 <div class="section level2">
@@ -292,8 +296,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/pharmacoevidence/seerSurv/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/pharmacoevidence/seerSurv/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/pharmacoevidence/seerSurv?branch=main" class="external-link"><img src="https://codecov.io/gh/pharmacoevidence/seerSurv/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/heorlytics/seerSurv/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/heorlytics/seerSurv/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://CRAN.R-project.org/package=seerSurv" class="external-link"><img src="https://www.r-pkg.org/badges/version/seerSurv" alt="CRAN status"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 <li><a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a></li>

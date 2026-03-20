@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   multi-tumour-analysis: multi-tumour-analysis.html
   seerSurv-intro: seerSurv-intro.html
-last_built: 2026-03-20T19:45Z
+last_built: 2026-03-20T20:01Z
 urls:
   reference: https://heorlytics.github.io/seerSurv/reference
   article: https://heorlytics.github.io/seerSurv/articles

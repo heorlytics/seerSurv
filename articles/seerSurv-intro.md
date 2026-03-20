@@ -7,11 +7,11 @@ include a **local/regional recurrence (LR)** state that sits between the
 disease-free state and distant recurrence (DR) or death. Populating such
 a model requires three monthly transition probabilities from LR:
 
-| Transition      | Symbol                                                                |
-|-----------------|-----------------------------------------------------------------------|
-| Remain in LR    | $P_{\text{LL}}$                                                       |
-| Progress to DR  | $P_{\text{DL}}$                                                       |
-| Die while in LR | $P_{\text{death} \mid \text{LR}} = 1 - P_{\text{LL}} - P_{\text{DL}}$ |
+| Transition      | Symbol                                                                     |
+|-----------------|----------------------------------------------------------------------------|
+| Remain in LR    | \\P\_{\text{LL}}\\                                                         |
+| Progress to DR  | \\P\_{\text{DL}}\\                                                         |
+| Die while in LR | \\P\_{\text{death} \mid \text{LR}} = 1 - P\_{\text{LL}} - P\_{\text{DL}}\\ |
 
 Trial-derived estimates are rarely available because clinical studies
 are typically powered for overall or disease-free survival, and LR
@@ -34,7 +34,7 @@ registry](https://seer.cancer.gov/), covering ten cancer types.
     pseudo-IPD using weighted maximum likelihood via `flexsurv`
     ([`fit_models()`](https://heorlytics.github.io/seerSurv/reference/fit_models.md)).
 
-3.  **Model averaging** — The top-$k$ distributions by AIC or BIC
+3.  **Model averaging** — The top-\\k\\ distributions by AIC or BIC
     receive relative-likelihood weights; the final curve is a convex
     blend
     ([`compute_weights()`](https://heorlytics.github.io/seerSurv/reference/compute_weights.md),
@@ -45,14 +45,14 @@ registry](https://seer.cancer.gov/), covering ten cancer types.
     US-CDC life-table to obtain net (all-cause) survival
     ([`make_background_surv()`](https://heorlytics.github.io/seerSurv/reference/make_background_surv.md)).
 
-5.  **Sojourn time and $P_{\text{LL}}$** — The mean LR sojourn time $M$
-    (months) equals the area difference between the net LR and net DR
-    curves. $P_{\text{LL}}$ solves
-    $\sum_{t = 0}^{N}P_{\text{LL}}^{t} = M$.
+5.  **Sojourn time and \\P\_{\text{LL}}\\** — The mean LR sojourn time
+    \\M\\ (months) equals the area difference between the net LR and net
+    DR curves. \\P\_{\text{LL}}\\ solves \\\sum\_{t=0}^{N}
+    P\_{\text{LL}}^t = M\\.
 
-6.  **Convolution for $P_{\text{DL}}$** — The modelled LR survival is
+6.  **Convolution for \\P\_{\text{DL}}\\** — The modelled LR survival is
     approximated as the sum of patients still in LR and those who have
-    transitioned to DR. $P_{\text{DL}}$ is estimated by least-squares
+    transitioned to DR. \\P\_{\text{DL}}\\ is estimated by least-squares
     ([`run_tumour_analysis()`](https://heorlytics.github.io/seerSurv/reference/run_tumour_analysis.md)).
 
 ------------------------------------------------------------------------

@@ -11,11 +11,11 @@ recurrence (LR)** and **distant recurrence (DR)** populations—typically
 extracted from the [SEER-17 registry](https://seer.cancer.gov/)—the
 package estimates:
 
-| Symbol                            | Description                                                              |
-|-----------------------------------|--------------------------------------------------------------------------|
-| $P_{\text{LL}}$                   | Monthly probability of remaining in LR                                   |
-| $P_{\text{DL}}$                   | Monthly probability of progressing from LR to DR                         |
-| $P_{\text{death} \mid \text{LR}}$ | Monthly probability of dying in LR ($1 - P_{\text{LL}} - P_{\text{DL}}$) |
+| Symbol           | Description                                          |
+|------------------|------------------------------------------------------|
+| P_LL             | Monthly probability of remaining in LR               |
+| P_DL             | Monthly probability of progressing from LR to DR     |
+| P_death given LR | Monthly probability of dying in LR (1 - P_LL - P_DL) |
 
 Bundled data cover **11 cancer types** (Breast, Bladder, Colon & Rectum,
 Esophageal, Kidney, Liver, Lung, Melanoma, Ovarian, Pancreatic,
@@ -31,7 +31,7 @@ install.packages("seerSurv")
 
 # Install the development version from GitHub
 # install.packages("pak")
-pak::pak("pharmacoevidence/seerSurv")
+pak::pak("heorlytics/seerSurv")
 ```
 
 ------------------------------------------------------------------------
@@ -59,7 +59,7 @@ result <- run_tumour_analysis(
 )
 
 result
-#> # A tibble: 1 × 7
+#> # A tibble: 1 x 7
 #>     P_LL P_DL_approach2 P_Death_L_approach2 RMST_L_years RMST_D_years M_years M_months
 #>    <dbl>          <dbl>               <dbl>        <dbl>        <dbl>   <dbl>    <dbl>
 #> 1  0.999         0.0003               4e-04         17.2         3.15    14.1     169.
@@ -108,28 +108,27 @@ results <- tumour_data_seer |>
 ## Methodology
 
     Input: 5-year aggregate survival (LR and DR) + demographics
-         │
-         ▼
-     prep_ipd()           ← convert to pseudo-IPD (probability-weighted)
-         │
-         ▼
-     fit_models()         ← 6 parametric distributions (flexsurv)
-         │
-         ▼
-     extract_ic() +       ← select top-k by AIC / BIC
-     compute_weights()    ← assign relative-likelihood weights
-         │
-         ▼
-     blend_survival()     ← weighted-average survival curve
-         │
-         ▼
-     make_background_surv() ← multiply by US-CDC life-table survival
-         │
-         ▼
-     run_tumour_analysis()  ← optimise P(LL) and P(DL), return tibble
+         |
+         v
+     prep_ipd()           <- convert to pseudo-IPD (probability-weighted)
+         |
+         v
+     fit_models()         <- 6 parametric distributions (flexsurv)
+         |
+         v
+     extract_ic() +       <- select top-k by AIC / BIC
+     compute_weights()    <- assign relative-likelihood weights
+         |
+         v
+     blend_survival()     <- weighted-average survival curve
+         |
+         v
+     make_background_surv() <- multiply by US-CDC life-table survival
+         |
+         v
+     run_tumour_analysis()  <- optimise P(LL) and P(DL), return tibble
 
-**P(LL)** is derived from the mean LR sojourn time (RMST
-differential).  
+**P(LL)** is derived from the mean LR sojourn time (RMST differential).
 **P(DL)** is estimated by minimising the relative sum-of-squares between
 the observed LR survival curve and its convolution approximation.
 
@@ -142,7 +141,7 @@ publication.
 
 | Dataset            | Description                                             |
 |--------------------|---------------------------------------------------------|
-| `lifetable_seer`   | US-CDC annual death rates by age and sex (ages 0–100)   |
+| `lifetable_seer`   | US-CDC annual death rates by age and sex (ages 0-100)   |
 | `tumour_data_seer` | SEER-17 5-year survival proportions for 11 cancer types |
 
 ------------------------------------------------------------------------
@@ -165,8 +164,8 @@ citation("seerSurv")
 ## Contributing
 
 Bug reports and pull requests are welcome on
-[GitHub](https://github.com/pharmacoevidence/seerSurv/issues). Please
-read the [contribution
+[GitHub](https://github.com/heorlytics/seerSurv/issues). Please read the
+[contribution
 guidelines](https://heorlytics.github.io/seerSurv/CONTRIBUTING.md)
 before opening a pull request.
 

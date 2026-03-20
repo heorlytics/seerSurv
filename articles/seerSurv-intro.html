@@ -6,7 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Introduction to seerSurv: Cancer Recurrence Transition Probabilities • seerSurv</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -29,14 +35,12 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="active nav-item"><a class="nav-link" href="../articles/seerSurv-intro.html">Get Started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/seerSurv-intro.html">Introduction to seerSurv: Cancer Recurrence Transition Probabilities</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Advanced</h6></li>
-    <li><a class="dropdown-item" href="../articles/multi-tumour-analysis.html">Multi-Tumour Analysis and Sensitivity Analyses with seerSurv</a></li>
+<li><a class="dropdown-item" href="../articles/multi-tumour-analysis.html">Multi-Tumour Analysis</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -91,15 +95,16 @@ probabilities from LR:</p>
 <tbody>
 <tr class="odd">
 <td>Remain in LR</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mtext mathvariant="normal">LL</mtext></msub><annotation encoding="application/x-tex">P_{\text{LL}}</annotation></semantics></math></td>
+<td><span class="math inline">\(P_{\text{LL}}\)</span></td>
 </tr>
 <tr class="even">
 <td>Progress to DR</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mtext mathvariant="normal">DL</mtext></msub><annotation encoding="application/x-tex">P_{\text{DL}}</annotation></semantics></math></td>
+<td><span class="math inline">\(P_{\text{DL}}\)</span></td>
 </tr>
 <tr class="odd">
 <td>Die while in LR</td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mtext mathvariant="normal">death</mtext><mo>∣</mo><mtext mathvariant="normal">LR</mtext></mrow></msub><mo>=</mo><mn>1</mn><mo>−</mo><msub><mi>P</mi><mtext mathvariant="normal">LL</mtext></msub><mo>−</mo><msub><mi>P</mi><mtext mathvariant="normal">DL</mtext></msub></mrow><annotation encoding="application/x-tex">P_{\text{death} \mid \text{LR}} = 1 - P_{\text{LL}} - P_{\text{DL}}</annotation></semantics></math></td>
+<td><span class="math inline">\(P_{\text{death} \mid \text{LR}} = 1 -
+P_{\text{LL}} - P_{\text{DL}}\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -123,31 +128,22 @@ proportions at years 0–5 are converted to pseudo-individual patient data
 (exponential, Weibull, Gompertz, log-logistic, log-normal, gamma) are
 fitted to the pseudo-IPD using weighted maximum likelihood via
 <code>flexsurv</code> (<code><a href="../reference/fit_models.html">fit_models()</a></code>).</p></li>
-<li><p><strong>Model averaging</strong> — The
-top-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
-distributions by AIC or BIC receive relative-likelihood weights; the
-final curve is a convex blend (<code><a href="../reference/compute_weights.html">compute_weights()</a></code>,
+<li><p><strong>Model averaging</strong> — The top-<span class="math inline">\(k\)</span> distributions by AIC or BIC receive
+relative-likelihood weights; the final curve is a convex blend
+(<code><a href="../reference/compute_weights.html">compute_weights()</a></code>,
 <code><a href="../reference/blend_survival.html">blend_survival()</a></code>).</p></li>
 <li><p><strong>Background mortality adjustment</strong> —
 Disease-specific survival is multiplied by age- and sex-specific
 background survival from the US-CDC life-table to obtain net (all-cause)
 survival (<code><a href="../reference/make_background_surv.html">make_background_surv()</a></code>).</p></li>
-<li><p><strong>Sojourn time and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mtext mathvariant="normal">LL</mtext></msub><annotation encoding="application/x-tex">P_{\text{LL}}</annotation></semantics></math></strong>
-— The mean LR sojourn time
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
-(months) equals the area difference between the net LR and net DR
-curves.
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mtext mathvariant="normal">LL</mtext></msub><annotation encoding="application/x-tex">P_{\text{LL}}</annotation></semantics></math>
-solves
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><mi>N</mi></msubsup><msubsup><mi>P</mi><mtext mathvariant="normal">LL</mtext><mi>t</mi></msubsup><mo>=</mo><mi>M</mi></mrow><annotation encoding="application/x-tex">\sum_{t=0}^{N} P_{\text{LL}}^t = M</annotation></semantics></math>.</p></li>
-<li><p><strong>Convolution for
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mtext mathvariant="normal">DL</mtext></msub><annotation encoding="application/x-tex">P_{\text{DL}}</annotation></semantics></math></strong>
-— The modelled LR survival is approximated as the sum of patients still
-in LR and those who have transitioned to DR.
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mtext mathvariant="normal">DL</mtext></msub><annotation encoding="application/x-tex">P_{\text{DL}}</annotation></semantics></math>
-is estimated by least-squares
-(<code><a href="../reference/run_tumour_analysis.html">run_tumour_analysis()</a></code>).</p></li>
+<li><p><strong>Sojourn time and <span class="math inline">\(P_{\text{LL}}\)</span></strong> — The mean LR
+sojourn time <span class="math inline">\(M\)</span> (months) equals the
+area difference between the net LR and net DR curves. <span class="math inline">\(P_{\text{LL}}\)</span> solves <span class="math inline">\(\sum_{t=0}^{N} P_{\text{LL}}^t =
+M\)</span>.</p></li>
+<li><p><strong>Convolution for <span class="math inline">\(P_{\text{DL}}\)</span></strong> — The modelled LR
+survival is approximated as the sum of patients still in LR and those
+who have transitioned to DR. <span class="math inline">\(P_{\text{DL}}\)</span> is estimated by
+least-squares (<code><a href="../reference/run_tumour_analysis.html">run_tumour_analysis()</a></code>).</p></li>
 </ol>
 <hr>
 </div>
