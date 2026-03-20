@@ -189,9 +189,8 @@ End-to-end function for a single tumour type
 
 ## Step-by-step building blocks
 
-Individual functions that
-[`run_tumour_analysis()`](https://heorlytics.github.io/seerSurv/reference/run_tumour_analysis.md)
-calls internally, exposed for custom workflows.
+Individual functions that run_tumour_analysis() calls internally,
+exposed for custom workflows.
 
 - [`prep_ipd()`](https://heorlytics.github.io/seerSurv/reference/prep_ipd.md)
   : Prepare Pseudo-Individual Patient Data from Aggregate Survival

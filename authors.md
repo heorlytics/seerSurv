@@ -4,7 +4,7 @@
 
 - **Sameer Mansoori**. Author. [](https://orcid.org/0009-0002-6606-0244)
 
-- **Shubhram Pandey**. Author, maintainer.
+- **[Shubhram Pandey](https://heorlytics.com)**. Author, maintainer.
   [](https://orcid.org/0009-0005-2303-1592)
 
 - **Rashi Rani**. Author. [](https://orcid.org/0009-0005-2303-1592)
