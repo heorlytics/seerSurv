@@ -8,26 +8,31 @@ template:
 home:
   title: "seerSurv — Cancer Recurrence Transition Probabilities"
   description: >
-    Derive monthly LR→DR transition probabilities for health economic models
+    Derive monthly LR->DR transition probabilities for health economic models
     from aggregate SEER-17 survival data.
+
+authors:
+  Shubhram Pandey:
+    href: https://heorlytics.com
+  Heorlytics Ltd:
+    href: https://heorlytics.com
 
 navbar:
   structure:
-    left:  [intro, reference, articles, news]
+    left:  [reference, articles, news]
     right: [search, github]
   components:
-    intro:
-      text: "Get Started"
-      href: articles/seerSurv-intro.html
     articles:
-      text: "Articles"
+      text: Articles
       menu:
-        - text: "Multi-Tumour Analysis"
+        - text: Introduction to seerSurv
+          href: articles/seerSurv-intro.html
+        - text: Multi-Tumour Analysis
           href: articles/multi-tumour-analysis.html
     github:
-      icon: fab fa-github fa-lg
+      icon: fa-github
       href: https://github.com/heorlytics/seerSurv
-      aria-label: GitHub repository
+      aria-label: GitHub
 
 reference:
   - title: "Main analysis wrapper"
@@ -37,7 +42,7 @@ reference:
 
   - title: "Step-by-step building blocks"
     desc: >
-      Individual functions that `run_tumour_analysis()` calls internally,
+      Individual functions that run_tumour_analysis() calls internally,
       exposed for custom workflows.
     contents:
       - prep_ipd
@@ -64,11 +69,13 @@ reference:
 
 articles:
   - title: "Getting started"
+    navbar: ~
     contents:
       - seerSurv-intro
   - title: "Advanced usage"
+    navbar: ~
     contents:
       - multi-tumour-analysis
 
 news:
-  - one_page: true
+  one_page: true
