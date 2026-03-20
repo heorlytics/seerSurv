@@ -1,0 +1,13 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.github$
+^data-raw$
+^cran-comments\.md$
+^CONTRIBUTING\.md$
+^CODE_OF_CONDUCT\.md$
+^_pkgdown\.yml$
+^pkgdown$
+^docs$
+^\.lintr$
+^\.pre-commit-config\.yaml$
+^CRAN-SUBMISSION$

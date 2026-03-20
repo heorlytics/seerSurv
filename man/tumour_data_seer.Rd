@@ -1,0 +1,47 @@
+\docType{data}
+\name{tumour_data_seer}
+\alias{tumour_data_seer}
+\title{SEER-17 Five-Year Aggregate Survival Data for 11 Cancer Types}
+\format{
+A data frame with 22 rows (2 recurrence types × 11 tumours) and 12 columns:
+\describe{
+  \item{\code{Tumor}}{Cancer type label.}
+  \item{\code{Recurrence}}{Recurrence type: \code{"LR"} or \code{"DR"}.}
+  \item{\code{S0}}{Survival at year 0 (always 1).}
+  \item{\code{S1}}{Survival at year 1.}
+  \item{\code{S2}}{Survival at year 2.}
+  \item{\code{S3}}{Survival at year 3.}
+  \item{\code{S4}}{Survival at year 4.}
+  \item{\code{S5}}{Survival at year 5.}
+  \item{\code{prop_male}}{Proportion of patients who are male.}
+  \item{\code{mean_age}}{Mean age at recurrence.}
+  \item{\code{N_LR}}{Number of LR patients in the SEER cohort.}
+  \item{\code{N_DR}}{Number of DR patients in the SEER cohort.}
+}
+}
+\source{
+Surveillance, Epidemiology, and End Results (SEER) Program.
+SEER*Stat Database: SEER 17 Regs Research Data, Nov 2022 Sub (2000–2020).
+\url{https://seer.cancer.gov/}
+}
+\usage{
+data(tumour_data_seer)
+}
+\description{
+Reference five-year aggregate survival proportions at years 0–5
+post-recurrence for local/regional recurrence (LR) and distant recurrence
+(DR) populations across 11 cancer types, extracted from the SEER-17 registry
+(cases diagnosed before 2021).
+}
+\details{
+The 11 tumour types are: Breast, Bladder, Colon & Rectum, Esophageal,
+Kidney, Liver, Lung, Melanoma, Ovarian, Pancreatic, and Stomach.
+}
+\examples{
+data(tumour_data_seer)
+dplyr::filter(tumour_data_seer, Tumor == "Melanoma")
+}
+\seealso{
+\code{\link{run_tumour_analysis}}
+}
+\keyword{datasets}

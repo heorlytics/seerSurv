@@ -1,0 +1,288 @@
+---
+title: "Introduction to seerTP: Cancer Recurrence Transition Probabilities"
+author: "Sameer Mansoori, Shubhram Pandey, Rashi Rani, Barinder Singh, Murat Kurt"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to seerTP}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse  = TRUE,
+  comment   = "#>",
+  fig.width = 7,
+  fig.height = 4,
+  out.width = "100%"
+)
+options(scipen = 999)
+```
+
+## Background
+
+State-transition health economic models of early-stage cancers often include a
+**local/regional recurrence (LR)** state that sits between the
+disease-free state and distant recurrence (DR) or death.  Populating such a
+model requires three monthly transition probabilities from LR:
+
+| Transition | Symbol |
+|---|---|
+| Remain in LR | $P_{\text{LL}}$ |
+| Progress to DR | $P_{\text{DL}}$ |
+| Die while in LR | $P_{\text{death} \mid \text{LR}} = 1 - P_{\text{LL}} - P_{\text{DL}}$ |
+
+Trial-derived estimates are rarely available because clinical studies are
+typically powered for overall or disease-free survival, and LR follow-up is
+too short to observe the full recurrence cascade.
+
+**seerTP** fills this gap by deriving the three probabilities from aggregate
+(population-level) survival data extracted from the
+[SEER-17 registry](https://seer.cancer.gov/), covering ten cancer types.
+
+---
+
+## Methodological overview
+
+```{r method-diagram, echo = FALSE, fig.cap = "seerTP workflow"}
+# Simple text diagram rendered as a figure caption placeholder
+```
+
+1. **Pseudo-IPD construction** — Aggregate survival proportions at years 0–5
+   are converted to pseudo-individual patient data (`prep_ipd()`).
+
+2. **Parametric modelling** — Six distributions (exponential, Weibull,
+   Gompertz, log-logistic, log-normal, gamma) are fitted to the pseudo-IPD
+   using weighted maximum likelihood via `flexsurv` (`fit_models()`).
+
+3. **Model averaging** — The top-$k$ distributions by AIC or BIC receive
+   relative-likelihood weights; the final curve is a convex blend
+   (`compute_weights()`, `blend_survival()`).
+
+4. **Background mortality adjustment** — Disease-specific survival is
+   multiplied by age- and sex-specific background survival from the US-CDC
+   life-table to obtain net (all-cause) survival (`make_background_surv()`).
+
+5. **Sojourn time and $P_{\text{LL}}$** — The mean LR sojourn time $M$
+   (months) equals the area difference between the net LR and net DR curves.
+   $P_{\text{LL}}$ solves $\sum_{t=0}^{N} P_{\text{LL}}^t = M$.
+
+6. **Convolution for $P_{\text{DL}}$** — The modelled LR survival is
+   approximated as the sum of patients still in LR and those who have
+   transitioned to DR.  $P_{\text{DL}}$ is estimated by least-squares
+   (`run_tumour_analysis()`).
+
+---
+
+## Quickstart: single tumour type
+
+```{r melanoma-demo, message = FALSE}
+library(seerTP)
+library(dplyr)
+
+data(lifetable_seer)
+
+# Five-year SEER-17 survival proportions — Melanoma
+s_lr <- c(1, 0.9959, 0.9886, 0.9831, 0.9783, 0.9754)
+s_dr <- c(1, 0.5491, 0.4396, 0.3945, 0.3630, 0.3410)
+
+result <- run_tumour_analysis(
+  tumour       = "Melanoma",
+  surv_vec_LR  = s_lr,
+  surv_vec_DR  = s_dr,
+  N_L          = 64775L,
+  N_D          = 3121L,
+  prop_male_LR = 0.580,
+  mean_age_LR  = 61,
+  prop_male_DR = 0.692,
+  mean_age_DR  = 62,
+  lifetable    = lifetable_seer,
+  scenario     = "lifetime",
+  criterion    = "AIC"
+)
+
+knitr::kable(result, digits = 5,
+             caption = "Monthly transition probabilities — Melanoma (lifetime, AIC)")
+```
+
+---
+
+## Step-by-step walkthrough
+
+### Step 1: Prepare pseudo-IPD
+
+```{r ipd}
+t    <- 0:5
+ipd_L <- prep_ipd(t, s_lr)
+ipd_D <- prep_ipd(t, s_dr)
+ipd_L
+```
+
+### Step 2: Fit parametric models
+
+```{r fit, message = FALSE}
+mods_L <- fit_models(ipd_L[-1, ])   # drop time = 0 row
+mods_D <- fit_models(ipd_D[-1, ])
+
+names(mods_L)
+```
+
+### Step 3: Compute AIC-based weights
+
+```{r weights}
+ic_L   <- extract_ic(mods_L, "AIC")
+wts_L  <- compute_weights(ic_L, top_k = 3, criterion = "AIC")
+wts_L
+```
+
+### Step 4: Blend survival curves
+
+```{r blend}
+grid     <- seq(0, 39, by = 1)   # 39-year lifetime horizon from age 61
+S_blend_L <- blend_survival(mods_L, wts_L, grid)
+head(S_blend_L)
+```
+
+### Step 5: Adjust for background mortality
+
+```{r bgmort}
+lt <- lifetable_seer |>
+  mutate(
+    btrate_LR = Males * 0.580 + Females * 0.420,
+    btrate_DR = Males * 0.692 + Females * 0.308
+  )
+
+B_LR <- make_background_surv(lt, mean_age = 61, rate_col = "btrate_LR",
+                              time_grid_years = grid)
+B_DR <- make_background_surv(lt, mean_age = 62, rate_col = "btrate_DR",
+                              time_grid_years = grid)
+head(B_LR)
+```
+
+### Step 6: Visualise
+
+```{r plot, fig.cap = "Blended and net survival curves — Melanoma"}
+ic_D  <- extract_ic(mods_D, "AIC")
+wts_D <- compute_weights(ic_D, top_k = 3, criterion = "AIC")
+S_blend_D <- blend_survival(mods_D, wts_D, grid)
+
+U_L <- left_join(S_blend_L, B_LR, by = "time") |>
+  mutate(surv = surv.x * surv.y) |> select(time, surv)
+
+U_D <- left_join(S_blend_D, B_DR, by = "time") |>
+  mutate(surv = surv.x * surv.y) |> select(time, surv)
+
+plot_survival_curves(S_blend_L, S_blend_D, U_L, U_D, tumour = "Melanoma")
+```
+
+---
+
+## Multi-tumour analysis using bundled data
+
+```{r multi, message = FALSE, warning = FALSE}
+data(tumour_data_seer)
+
+results_multi <- tumour_data_seer |>
+  group_by(Tumor) |>
+  summarise(
+    out = list(
+      run_tumour_analysis(
+        tumour       = first(Tumor),
+        surv_vec_LR  = c(S0[Recurrence == "LR"], S1[Recurrence == "LR"],
+                         S2[Recurrence == "LR"], S3[Recurrence == "LR"],
+                         S4[Recurrence == "LR"], S5[Recurrence == "LR"]),
+        surv_vec_DR  = c(S0[Recurrence == "DR"], S1[Recurrence == "DR"],
+                         S2[Recurrence == "DR"], S3[Recurrence == "DR"],
+                         S4[Recurrence == "DR"], S5[Recurrence == "DR"]),
+        N_L          = first(N_LR),
+        N_D          = first(N_DR),
+        prop_male_LR = prop_male[Recurrence == "LR"],
+        mean_age_LR  = mean_age[Recurrence == "LR"],
+        prop_male_DR = prop_male[Recurrence == "DR"],
+        mean_age_DR  = mean_age[Recurrence == "DR"],
+        lifetable    = lifetable_seer,
+        scenario     = "lifetime",
+        criterion    = "AIC"
+      )
+    ),
+    .groups = "drop"
+  ) |>
+  tidyr::unnest(out)
+
+knitr::kable(
+  results_multi |> select(Tumor, P_LL, P_DL_approach2, P_Death_L_approach2,
+                           M_months),
+  digits  = 5,
+  caption = "Monthly transition probabilities across 11 cancer types (lifetime, AIC)"
+)
+```
+
+---
+
+## Sensitivity analysis: time horizons and model-selection criteria
+
+```{r sensitivity, message = FALSE, warning = FALSE}
+scenarios  <- c("lifetime", "20y", "5y")
+criteria   <- c("AIC", "BIC")
+
+sens_grid <- expand.grid(scenario = scenarios, criterion = criteria,
+                         stringsAsFactors = FALSE)
+
+sens_results <- lapply(seq_len(nrow(sens_grid)), function(i) {
+  run_tumour_analysis(
+    tumour       = "Melanoma",
+    surv_vec_LR  = s_lr,
+    surv_vec_DR  = s_dr,
+    N_L          = 64775L,
+    N_D          = 3121L,
+    prop_male_LR = 0.580,
+    mean_age_LR  = 61,
+    prop_male_DR = 0.692,
+    mean_age_DR  = 62,
+    lifetable    = lifetable_seer,
+    scenario     = sens_grid$scenario[i],
+    criterion    = sens_grid$criterion[i]
+  ) |>
+    mutate(scenario  = sens_grid$scenario[i],
+           criterion = sens_grid$criterion[i])
+})
+
+sens_df <- bind_rows(sens_results) |>
+  select(scenario, criterion, P_LL, P_DL_approach2, P_Death_L_approach2)
+
+knitr::kable(sens_df, digits = 5,
+             caption = "Sensitivity analysis — Melanoma across scenarios and criteria")
+```
+
+---
+
+## Interpreting the outputs
+
+| Column | Interpretation |
+|---|---|
+| `P_LL` | Per-month probability of remaining in LR state |
+| `P_DL_approach2` | Per-month probability of progressing from LR to DR |
+| `P_Death_L_approach2` | Per-month probability of dying while in LR |
+| `RMST_L_years` | Restricted mean survival time — LR population (net, years) |
+| `RMST_D_years` | Restricted mean survival time — DR population (net, years) |
+| `M_years` / `M_months` | Mean sojourn time in LR state |
+
+These probabilities can be plugged directly into a Markov cohort model or a
+partitioned survival model that includes an LR health state.
+
+---
+
+## References
+
+Mansoori S, Pandey S, Rani R, Singh B, Kurt M (2025).
+"Deriving Cancer Progression Rates After Local/Regional Recurrence Using
+Aggregate Survival Data: An R Package for Health Economic Evaluations."
+*Value in Health* (submitted).
+
+SEER Program. National Cancer Institute. <https://seer.cancer.gov/>.
+
+Jackson C (2016). "flexsurv: A Platform for Parametric Survival Modelling
+in R." *Journal of Statistical Software*, **70**(8), 1–33.
+doi:[10.18637/jss.v070.i08](https://doi.org/10.18637/jss.v070.i08).

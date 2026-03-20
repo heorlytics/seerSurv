@@ -1,0 +1,11 @@
+linters: linters_with_defaults(
+  line_length_linter(100),
+  object_name_linter("snake_case"),
+  cyclocomp_linter(complexity_limit = 20),
+  # Allow .internal_helper naming
+  object_name_linter = NULL
+)
+exclusions: list(
+  "data-raw",
+  "vignettes"
+)

@@ -1,0 +1,66 @@
+url: https://pharmacoevidence.github.io/seerSurv/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+
+home:
+  title: "seerSurv — Cancer Recurrence Transition Probabilities"
+  description: >
+    Derive monthly LR→DR transition probabilities for health economic models
+    from aggregate SEER-17 survival data.
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/pharmacoevidence/seerSurv
+
+reference:
+  - title: "Main analysis wrapper"
+    desc: "End-to-end function for a single tumour type"
+    contents:
+      - run_tumour_analysis
+
+  - title: "Step-by-step building blocks"
+    desc: >
+      Individual functions that `run_tumour_analysis()` calls internally,
+      exposed for custom workflows.
+    contents:
+      - prep_ipd
+      - fit_models
+      - extract_ic
+      - compute_weights
+      - blend_survival
+      - predict_surv
+      - make_background_surv
+      - rmst
+
+  - title: "Visualisation"
+    contents:
+      - plot_survival_curves
+
+  - title: "Bundled datasets"
+    contents:
+      - lifetable_seer
+      - tumour_data_seer
+
+  - title: "Package"
+    contents:
+      - seerSurv-package
+
+articles:
+  - title: "Getting started"
+    navbar: ~
+    contents:
+      - seerSurv-intro
+  - title: "Advanced usage"
+    navbar: "Advanced"
+    contents:
+      - multi-tumour-analysis
+
+news:
+  - one_page: true

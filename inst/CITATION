@@ -1,0 +1,27 @@
+citHeader("To cite seerSurv in publications please use:")
+
+bibentry(
+  bibtype  = "Article",
+  title    = paste(
+    "Deriving Cancer Progression Rates After Local/Regional Recurrence",
+    "Using Aggregate Survival Data: An R Package for Health Economic Evaluations"
+  ),
+  author   = c(
+    person("Sameer",   "Mansoori"),
+    person("Shubhram", "Pandey"),
+    person("Rashi",    "Rani"),
+    person("Barinder", "Singh"),
+    person("Murat",    "Kurt")
+  ),
+  journal  = "Value in Health",
+  year     = "2025",
+  note     = "Submitted",
+  url      = "https://github.com/pharmacoevidence/seerSurv",
+  textVersion = paste(
+    "Mansoori S, Pandey S, Rani R, Singh B, Kurt M (2025).",
+    "Deriving Cancer Progression Rates After Local/Regional Recurrence",
+    "Using Aggregate Survival Data: An R Package for Health Economic Evaluations.",
+    "Value in Health (submitted).",
+    "URL: https://github.com/pharmacoevidence/seerSurv"
+  )
+)
