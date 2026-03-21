@@ -172,7 +172,7 @@ citation("seerSurv")
 
 Bug reports and pull requests are welcome on
 [GitHub](https://github.com/heorlytics/seerSurv/issues).
-Please read the [contribution guidelines](CONTRIBUTING.md) before opening a
+Please read the [contribution guidelines](https://github.com/heorlytics/seerSurv/blob/master/CONTRIBUTING.md) before opening a
 pull request.
 
 ---

@@ -16,12 +16,12 @@ bibentry(
   journal  = "Value in Health",
   year     = "2025",
   note     = "Submitted",
-  url      = "https://github.com/pharmacoevidence/seerSurv",
+  url      = "https://github.com/heorlytics/seerSurv",
   textVersion = paste(
     "Mansoori S, Pandey S, Rani R, Singh B, Kurt M (2025).",
     "Deriving Cancer Progression Rates After Local/Regional Recurrence",
     "Using Aggregate Survival Data: An R Package for Health Economic Evaluations.",
     "Value in Health (submitted).",
-    "URL: https://github.com/pharmacoevidence/seerSurv"
+    "URL: https://github.com/heorlytics/seerSurv"
   )
 )

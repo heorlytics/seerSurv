@@ -71,4 +71,5 @@
 #' @importFrom flexsurv flexsurvreg
 #' @importFrom ggplot2 ggplot aes geom_line labs theme_minimal scale_colour_brewer theme element_text
 #' @importFrom rlang abort warn inform .data
+#' @importFrom stats setNames
 "_PACKAGE"

@@ -7,12 +7,9 @@ Authors@R: c(
     person("Shubhram",  "Pandey",    role = c("aut", "cre"),
            email = "shubhram.pandey@heorlytics.com",
            comment = c(ORCID = "0009-0005-2303-1592")),
-    person("Rashi",     "Rani",      role = "aut",
-           comment = c(ORCID = "0009-0005-2303-1592")),
-    person("Barinder",  "Singh",     role = "aut",
-           comment = c(ORCID = "0009-0005-2303-1592")),
-    person("Murat",     "Kurt",      role = "aut",
-           comment = c(ORCID = "0009-0005-2303-1592"))
+    person("Rashi",     "Rani",      role = "aut"),
+    person("Barinder",  "Singh",     role = "aut"),
+    person("Murat",     "Kurt",      role = "aut")
   )
 Description: Estimates long-term cancer progression transition probabilities
     after local/regional recurrence (LR) using state-transition models calibrated
