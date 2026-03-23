@@ -24,7 +24,8 @@
 #'
 #' @source
 #' US CDC/NCHS National Vital Statistics Reports, underlying cause-of-death
-#' life-tables (\url{https://www.cdc.gov/nchs/nvss/life-tables.htm}).
+#' life-tables. National Center for Health Statistics, Centers for Disease
+#' Control and Prevention.
 #'
 #' @seealso \code{\link{make_background_surv}}, \code{\link{run_tumour_analysis}}
 #'

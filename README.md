@@ -1,8 +1,8 @@
 # seerSurv <img src="man/figures/logo.png" align="right" height="120" alt="seerSurv hex sticker" />
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/pharmacoevidence/seerSurv/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pharmacoevidence/seerSurv/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/pharmacoevidence/seerSurv/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pharmacoevidence/seerSurv?branch=main)
+[![R-CMD-check](https://github.com/heorlytics/seerSurv/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/heorlytics/seerSurv/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/heorlytics/seerSurv/branch/main/graph/badge.svg)](https://app.codecov.io/gh/heorlytics/seerSurv?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/seerSurv)](https://CRAN.R-project.org/package=seerSurv)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -37,7 +37,7 @@ install.packages("seerSurv")
 
 # Install the development version from GitHub
 # install.packages("pak")
-pak::pak("pharmacoevidence/seerSurv")
+pak::pak("heorlytics/seerSurv")
 ```
 
 ---
@@ -172,8 +172,8 @@ citation("seerSurv")
 ## Contributing
 
 Bug reports and pull requests are welcome on
-[GitHub](https://github.com/pharmacoevidence/seerSurv/issues).
-Please read the [contribution guidelines](CONTRIBUTING.md) before opening a
+[GitHub](https://github.com/heorlytics/seerSurv/issues).
+Please read the [contribution guidelines](https://github.com/heorlytics/seerSurv/blob/master/CONTRIBUTING.md) before opening a
 pull request.
 
 ---

@@ -13,3 +13,4 @@
 ^\.pre-commit-config\.yaml$
 ^CRAN-SUBMISSION$
 ^LICENSE\.md$
+^\.Rhistory$

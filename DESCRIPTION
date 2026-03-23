@@ -55,6 +55,7 @@ Suggests:
     knitr     (>= 1.42),
     rmarkdown (>= 2.21),
     openxlsx  (>= 4.2.5),
+    ggrepel   (>= 0.9.0),
     covr,
     spelling
 Config/testthat/edition: 3

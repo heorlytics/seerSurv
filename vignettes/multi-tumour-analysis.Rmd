@@ -133,7 +133,7 @@ all_results |>
 
 ## AIC vs BIC comparison (lifetime horizon)
 
-```{r aic-bic, fig.cap = "AIC vs BIC — P(DR)"}
+```{r aic-bic, fig.cap = "AIC vs BIC — P(DR)", eval = requireNamespace("ggrepel", quietly = TRUE)}
 all_results |>
   filter(scenario == "lifetime") |>
   select(Tumor, criterion, P_DL_approach2) |>
