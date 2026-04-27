@@ -1,6 +1,7 @@
 ## ============================================================
 ##  State-Transition Model — Full Pipeline + Poster Plots
 ##  horizon accepts "lifetime" OR any numeric value 1–100 yrs
+##  POSTER EDITION — 300 dpi, base_size = 22
 ## ============================================================
 
 library(flexsurv)
@@ -21,28 +22,30 @@ dists <- c("exp", "weibull", "lnorm", "llogis", "gompertz", "gengamma")
 .FILL_M   <- "#D6E8F5"   # light blue — sojourn ribbon
 .COL_GRID <- "#D0D9E8"   # axis grid lines
 
-## ── Shared ggplot theme ───────────────────────────────────────
-.poster_theme <- function(base_size = 14) {
+## ── Shared ggplot theme (POSTER EDITION — 300 dpi) ───────────
+## base_size bumped to 22 so text reads at arm's length;
+## all weights, margins, and key widths scaled accordingly.
+.poster_theme <- function(base_size = 22) {
   theme_minimal(base_size = base_size) +
     theme(
       text             = element_text(family = "Arial", colour = "#203864"),
-      plot.title       = element_text(size   = base_size + 1, face = "bold",
+      plot.title       = element_text(size   = base_size + 4, face = "bold",
                                       colour = "#004C7D",
-                                      margin = margin(b = 4)),
-      plot.subtitle    = element_text(size   = base_size - 3, colour = "#5a6a8a",
-                                      margin = margin(b = 8)),
+                                      margin = margin(b = 6)),
+      plot.subtitle    = element_text(size   = base_size - 4, colour = "#5a6a8a",
+                                      margin = margin(b = 12)),
       axis.title       = element_text(size   = base_size - 2, face = "bold"),
-      axis.text        = element_text(size   = base_size - 3),
+      axis.text        = element_text(size   = base_size - 4),
       legend.title     = element_blank(),
-      legend.text      = element_text(size   = base_size - 3),
+      legend.text      = element_text(size   = base_size - 4),
       legend.position  = "bottom",
-      legend.key.width = unit(1.2, "cm"),
-      legend.spacing.x = unit(0.4, "cm"),
-      panel.grid.major = element_line(colour = .COL_GRID, linewidth = 0.35),
+      legend.key.width = unit(2.0, "cm"),       # wider swatch — readable at distance
+      legend.spacing.x = unit(0.7, "cm"),
+      panel.grid.major = element_line(colour = .COL_GRID, linewidth = 0.5),
       panel.grid.minor = element_blank(),
       plot.background  = element_rect(fill = "white", colour = NA),
       panel.background = element_rect(fill = "white", colour = NA),
-      plot.margin      = margin(10, 16, 10, 14),
+      plot.margin      = margin(18, 28, 18, 24),
       strip.text       = element_text(size   = base_size - 1, face = "bold",
                                       colour = "#004C7D")
     )
@@ -120,8 +123,8 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
   obs_cap <- min(obs_years, horizon_years)
 
   dat <- bind_rows(
-    S_blend_L %>% mutate(Group = "Locoregional (LR)  Q\u2097(t)"),
-    S_blend_D %>% mutate(Group = "Distant (DR)  Q\u1d05(t)")
+    S_blend_L %>% mutate(Group = "Locoregional (LR)  Q_L(t)"),
+    S_blend_D %>% mutate(Group = "Distant (DR)  Q_D(t)")
   ) %>% filter(time <= horizon_years)
 
   ggplot(dat, aes(x = time, y = surv, colour = Group, linetype = Group)) +
@@ -130,21 +133,22 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
              ymin = 0, ymax = 1,
              fill = "#F0F4FA", alpha = 0.55) +
     annotate("text",
-             x = obs_cap + (horizon_years - obs_cap) * 0.04,
-             y = 0.94,
+             x     = obs_cap + (horizon_years - obs_cap) * 0.04,
+             y     = 0.94,
              label = "Extrapolation zone",
-             size = 3.2, colour = "#8A9BBE",
+             size  = 6,                              # ~17 pt at 300 dpi
+             colour = "#8A9BBE",
              hjust = 0, fontface = "italic") +
     geom_vline(xintercept = obs_cap,
-               colour = "#8A9BBE", linetype = "dotted", linewidth = 0.7) +
-    geom_line(linewidth = 1.3) +
+               colour = "#8A9BBE", linetype = "dotted", linewidth = 1.0) +
+    geom_line(linewidth = 1.8) +                     # was 1.3
     scale_colour_manual(
-      values = c("Locoregional (LR)  Q\u2097(t)" = .COL_LR,
-                 "Distant (DR)  Q\u1d05(t)"      = .COL_DR)
+      values = c("Locoregional (LR)  Q_L(t)" = .COL_LR,
+                 "Distant (DR)  Q_D(t)"      = .COL_DR)
     ) +
     scale_linetype_manual(
-      values = c("Locoregional (LR)  Q\u2097(t)" = "solid",
-                 "Distant (DR)  Q\u1d05(t)"      = "dashed")
+      values = c("Locoregional (LR)  Q_L(t)" = "solid",
+                 "Distant (DR)  Q_D(t)"      = "dashed")
     ) +
     scale_y_continuous(labels = percent_format(accuracy = 1),
                        limits = c(0, 1), expand = c(0, 0)) +
@@ -182,8 +186,8 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
                   approx(wide$time, wide$surv_D, ann_x)$y))
 
   dat <- bind_rows(
-    U_L %>% mutate(Group = "U\u2097(t)  LR population"),
-    U_D %>% mutate(Group = "U\u1d05(t)  DR population")
+    U_L %>% mutate(Group = "U_L(t)  LR population"),
+    U_D %>% mutate(Group = "U_D(t)  DR population")
   ) %>% filter(time <= horizon_years)
 
   ggplot(dat, aes(x = time, y = surv)) +
@@ -191,26 +195,26 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
                 aes(x = time, ymin = surv_D, ymax = surv_L),
                 inherit.aes = FALSE,
                 fill = .FILL_M, alpha = 0.65) +
-    geom_line(aes(colour = Group, linetype = Group), linewidth = 1.3) +
+    geom_line(aes(colour = Group, linetype = Group), linewidth = 1.8) +  # was 1.3
     annotate("segment",
              x = ann_x, xend = ann_x,
-             y = approx(wide$time, wide$surv_D, ann_x)$y,
+             y    = approx(wide$time, wide$surv_D, ann_x)$y,
              yend = approx(wide$time, wide$surv_L, ann_x)$y,
-             colour = "#004C7D", linewidth = 0.9,
+             colour = "#004C7D", linewidth = 1.2,               # was 0.9
              arrow = arrow(ends = "both", type = "open",
-                           length = unit(0.18, "cm"))) +
+                           length = unit(0.28, "cm"))) +        # was 0.18
     annotate("label",
              x = ann_x + horizon_years * 0.02, y = ann_y,
              label = sprintf("M = %.1f months\nP(L|L) = %.4f", M_months, P_LL),
-             size = 3.6, fontface = "bold", colour = "#004C7D",
-             fill = "white", label.size = 0.3, hjust = 0) +
+             size = 5.5, fontface = "bold", colour = "#004C7D", # was 3.6
+             fill = "white", label.size = 0.4, hjust = 0) +    # was 0.3
     scale_colour_manual(
-      values = c("U\u2097(t)  LR population" = .COL_LR,
-                 "U\u1d05(t)  DR population" = .COL_DR)
+      values = c("U_L(t)  LR population" = .COL_LR,
+                 "U_D(t)  DR population" = .COL_DR)
     ) +
     scale_linetype_manual(
-      values = c("U\u2097(t)  LR population" = "solid",
-                 "U\u1d05(t)  DR population" = "dashed")
+      values = c("U_L(t)  LR population" = "solid",
+                 "U_D(t)  DR population" = "dashed")
     ) +
     scale_y_continuous(labels = percent_format(accuracy = 1),
                        limits = c(0, 1), expand = c(0, 0)) +
@@ -273,7 +277,7 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
   p_main <- ggplot(long_dat,
                    aes(x = years, y = surv,
                        colour = Series, linetype = Series)) +
-    geom_line(linewidth = 1.25) +
+    geom_line(linewidth = 1.7) +                               # was 1.25
     scale_colour_manual(
       values = c("R(t) \u2014 blended parametric [LR data]"       = .COL_LR,
                  "D(t)+L(t) \u2014 transition-based " = .COL_PRED)
@@ -299,12 +303,12 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
     theme(legend.position = "bottom",
           axis.text.x    = element_blank(),
           axis.ticks.x   = element_blank(),
-          plot.margin    = margin(10, 16, 2, 14))
+          plot.margin    = margin(18, 28, 2, 24))              # was margin(10,16,2,14)
 
   p_resid <- ggplot(base_dat, aes(x = years, y = residual)) +
     geom_hline(yintercept = 0,
-               colour = .COL_LR, linewidth = 0.7) +
-    geom_line(colour = .COL_PRED, linewidth = 0.9) +
+               colour = .COL_LR, linewidth = 1.0) +           # was 0.7
+    geom_line(colour = .COL_PRED, linewidth = 1.2) +          # was 0.9
     geom_ribbon(aes(ymin = 0, ymax = residual),
                 fill = .COL_PRED, alpha = 0.15) +
     scale_y_continuous(labels = percent_format(accuracy = 0.1)) +
@@ -313,7 +317,7 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
                        expand = c(0, 0)) +
     labs(x = "Time (years)", y = "Relative\nresidual") +
     .poster_theme() +
-    theme(plot.margin   = margin(2, 16, 10, 14),
+    theme(plot.margin   = margin(2, 28, 18, 24),              # was margin(2,16,10,14)
           plot.title    = element_blank(),
           plot.subtitle = element_blank())
 
@@ -355,7 +359,7 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
              width = 0.62, colour = "white") +
     geom_text(aes(label = sprintf("%.3f", weight)),
               position = position_dodge(width = 0.72),
-              hjust = -0.12, size = 3.4, fontface = "bold",
+              hjust = -0.12, size = 5.5, fontface = "bold",   # was 3.4
               colour = "#203864") +
     scale_fill_manual(
       values = c("Locoregional (LR)" = .COL_LR,
@@ -373,7 +377,6 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
     .poster_theme() +
     theme(legend.position = "bottom")
 }
-
 
 
 ## ---- Plot 5: All-in-one — Q_L, U_L, Q_D, U_D in a single panel ----
@@ -400,42 +403,40 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
   ## ── long data (4 curves) ─────────────────────────────────
   dat <- bind_rows(
     S_blend_L %>% filter(time <= x_max) %>%
-      mutate(Group = "LR  —  Qₗ(t)  [relative]"),
+      mutate(Group = "LR  \u2014  Q_L(t)  [relative]"),
     S_blend_D %>% filter(time <= x_max) %>%
-      mutate(Group = "DR  —  Qᴅ(t)  [relative]"),
+      mutate(Group = "DR  \u2014  Q_D(t)  [relative]"),
     U_L %>% filter(time <= x_max) %>%
-      mutate(Group = "LR  —  Uₗ(t)  [unconditional]"),
+      mutate(Group = "LR  \u2014  U_L(t)  [unconditional]"),
     U_D %>% filter(time <= x_max) %>%
-      mutate(Group = "DR  —  Uᴅ(t)  [unconditional]")
+      mutate(Group = "DR  \u2014  U_D(t)  [unconditional]")
   )
 
   dat$Group <- factor(dat$Group, levels = c(
-    "LR  —  Qₗ(t)  [relative]",
-    "LR  —  Uₗ(t)  [unconditional]",
-    "DR  —  Qᴅ(t)  [relative]",
-    "DR  —  Uᴅ(t)  [unconditional]"
+    "LR  \u2014  Q_L(t)  [relative]",
+    "LR  \u2014  U_L(t)  [unconditional]",
+    "DR  \u2014  Q_D(t)  [relative]",
+    "DR  \u2014  U_D(t)  [unconditional]"
   ))
 
   ## ── colour / linetype / linewidth maps ───────────────────
-  ## LR = navy family, DR = green family
-  ## dashed = relative Q(t),  solid = unconditional U(t)
   col_map <- c(
-    "LR  —  Qₗ(t)  [relative]"      = "#6FA8D4",
-    "LR  —  Uₗ(t)  [unconditional]"  = "#004C7D",
-    "DR  —  Qᴅ(t)  [relative]"      = "#9BD468",
-    "DR  —  Uᴅ(t)  [unconditional]"  = "#3A8A00"
+    "LR  \u2014  Q_L(t)  [relative]"      = "#6FA8D4",
+    "LR  \u2014  U_L(t)  [unconditional]"  = "#004C7D",
+    "DR  \u2014  Q_D(t)  [relative]"      = "#9BD468",
+    "DR  \u2014  U_D(t)  [unconditional]"  = "#3A8A00"
   )
   lty_map <- c(
-    "LR  —  Qₗ(t)  [relative]"      = "dashed",
-    "LR  —  Uₗ(t)  [unconditional]"  = "solid",
-    "DR  —  Qᴅ(t)  [relative]"      = "dashed",
-    "DR  —  Uᴅ(t)  [unconditional]"  = "solid"
+    "LR  \u2014  Q_L(t)  [relative]"      = "dashed",
+    "LR  \u2014  U_L(t)  [unconditional]"  = "solid",
+    "DR  \u2014  Q_D(t)  [relative]"      = "dashed",
+    "DR  \u2014  U_D(t)  [unconditional]"  = "solid"
   )
   lwd_map <- c(
-    "LR  —  Qₗ(t)  [relative]"      = 0.9,
-    "LR  —  Uₗ(t)  [unconditional]"  = 1.5,
-    "DR  —  Qᴅ(t)  [relative]"      = 0.9,
-    "DR  —  Uᴅ(t)  [unconditional]"  = 1.5
+    "LR  \u2014  Q_L(t)  [relative]"      = 1.1,   # was 0.9
+    "LR  \u2014  U_L(t)  [unconditional]"  = 2.0,   # was 1.5
+    "DR  \u2014  Q_D(t)  [relative]"      = 1.1,
+    "DR  \u2014  U_D(t)  [unconditional]"  = 2.0
   )
 
   ## ── ribbon data ──────────────────────────────────────────
@@ -450,7 +451,7 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
     filter(time <= x_max)
 
   ## ── M annotation position ────────────────────────────────
-  wide_U  <- U_L %>% rename(surv_L = surv) %>%
+  wide_U <- U_L %>% rename(surv_L = surv) %>%
     left_join(U_D %>% rename(surv_D = surv), by = "time") %>%
     filter(time <= x_max)
 
@@ -460,19 +461,18 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
 
   ## ── build plot ───────────────────────────────────────────
   p <- ggplot(dat, aes(x = time, y = surv,
-                       colour    = Group,
-                       linetype  = Group,
-                       linewidth = Group)) +
+                       colour   = Group,
+                       linetype = Group)) +
     ## extrapolation zone
     annotate("rect",
              xmin = obs_cap, xmax = x_max, ymin = 0, ymax = 1,
              fill = "#F0F4FA", alpha = 0.50) +
     annotate("text",
              x = obs_cap + (x_max - obs_cap) * 0.04, y = 0.97,
-             label = "Extrapolation", size = 3.0,
+             label = "Extrapolation", size = 5.5,              # was 3.0
              colour = "#8A9BBE", hjust = 0, fontface = "italic") +
     geom_vline(xintercept = obs_cap,
-               colour = "#8A9BBE", linetype = "dotted", linewidth = 0.6)
+               colour = "#8A9BBE", linetype = "dotted", linewidth = 0.9)  # was 0.6
 
   if (show_ribbon) {
     p <- p +
@@ -499,30 +499,38 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
              x = ann_x, xend = ann_x,
              y    = approx(wide_U$time, wide_U$surv_D, ann_x)$y,
              yend = approx(wide_U$time, wide_U$surv_L, ann_x)$y,
-             colour = "#004C7D", linewidth = 0.9,
+             colour = "#004C7D", linewidth = 1.2,              # was 0.9
              arrow = arrow(ends = "both", type = "open",
-                           length = unit(0.17, "cm"))) +
+                           length = unit(0.25, "cm"))) +       # was 0.17
     annotate("label",
              x     = ann_x + x_max * 0.015,
              y     = ann_y,
              label = sprintf("M = %.1f mo\nP(L|L) = %.4f", M_months, P_LL),
-             size = 3.5, fontface = "bold", colour = "#004C7D",
-             fill = "white", label.size = 0.25, hjust = 0) +
-    ## four curves
-    geom_line() +
+             size = 5.5, fontface = "bold", colour = "#004C7D", # was 3.5
+             fill = "white", label.size = 0.35, hjust = 0) +   # was 0.25
+    ## four curves — linewidth applied per-group via separate geom_line() calls
+    ## to avoid the filled-rectangle legend key that scale_discrete_manual("linewidth")
+    ## produces in ggplot2 >= 3.4
+    geom_line(data = ~ subset(.x, Group == "LR  \u2014  Q_L(t)  [relative]"),
+              linewidth = lwd_map[["LR  \u2014  Q_L(t)  [relative]"]]) +
+    geom_line(data = ~ subset(.x, Group == "LR  \u2014  U_L(t)  [unconditional]"),
+              linewidth = lwd_map[["LR  \u2014  U_L(t)  [unconditional]"]]) +
+    geom_line(data = ~ subset(.x, Group == "DR  \u2014  Q_D(t)  [relative]"),
+              linewidth = lwd_map[["DR  \u2014  Q_D(t)  [relative]"]]) +
+    geom_line(data = ~ subset(.x, Group == "DR  \u2014  U_D(t)  [unconditional]"),
+              linewidth = lwd_map[["DR  \u2014  U_D(t)  [unconditional]"]]) +
     scale_colour_manual(values   = col_map, name = NULL) +
     scale_linetype_manual(values = lty_map, name = NULL) +
-    scale_discrete_manual("linewidth", values = lwd_map, name = NULL) +
     scale_y_continuous(labels = percent_format(accuracy = 1),
                        limits = c(0, 1), expand = c(0, 0)) +
     scale_x_continuous(breaks = pretty_breaks(n = 7),
                        limits = c(0, x_max), expand = c(0, 0)) +
     labs(
-      title    = "Survival Overview: Relative & Unconditional — LR vs DR",
+      title    = "Survival Overview: Relative & Unconditional \u2014 LR vs DR",
       subtitle = sprintf(
         paste0("%s  |  %s  |  Horizon: %s\n",
-               "Solid = unconditional U(t)=B(t)×Q(t)  ·  ",
-               "Dashed = relative Q(t)  ·  ",
+               "Solid = unconditional U(t)=B(t)\u00d7Q(t)  \u00b7  ",
+               "Dashed = relative Q(t)  \u00b7  ",
                "Shaded ribbons: navy = LR background gap, ",
                "green = DR background gap, blue = sojourn M"),
         tumour, criterion, horizon_label),
@@ -532,8 +540,8 @@ make_background_surv <- function(lifetable, mean_age, rate_col, time_grid_years)
     .poster_theme() +
     theme(
       legend.position  = "bottom",
-      legend.key.width = unit(1.5, "cm"),
-      legend.spacing.x = unit(0.5, "cm")
+      legend.key.width = unit(2.2, "cm"),   # was 1.5
+      legend.spacing.x = unit(0.6, "cm")   # was 0.5
     )
 
   p
@@ -690,7 +698,7 @@ run_tumour_analysis <- function(
                           interval = c(0, 1 - P_LL))$minimum
   P_Death_L_2 <- 1 - P_LL - P_DL_2
 
-  ## ── 12. Build all four plots ──────────────────────────────
+  ## ── 12. Build all five plots ──────────────────────────────
   p1 <- .plot_relative_survival(
     S_blend_L, S_blend_D,
     horizon_years, horizon_label, obs_years,
@@ -779,8 +787,15 @@ print_results <- function(run) {
   ))
 }
 
-## Save all four plots to PNG
-save_run_plots <- function(run, outdir = ".", width = 9, height = 6, dpi = 300) {
+## ── Save all five plots to PNG at poster resolution ──────────
+## Default canvas: 16 × 10 in at 300 dpi  ≈  4800 × 3000 px.
+## Approach-2 stacked plot gets +3 in of height automatically.
+save_run_plots <- function(run,
+                           outdir = ".",
+                           width  = 16,      # inches  (was 9)
+                           height = 10,      # inches  (was 6)
+                           dpi    = 300) {
+
   r      <- run$results
   prefix <- file.path(
     outdir,
@@ -788,30 +803,54 @@ save_run_plots <- function(run, outdir = ".", width = 9, height = 6, dpi = 300) 
          paste(r$tumour, r$criterion,
                gsub(" ", "_", r$horizon_label), sep = "_"))
   )
+
   for (nm in names(run$plots)) {
-    h <- if (grepl("approach2", nm)) height + 2 else height
+    h <- if (grepl("approach2", nm)) height + 3 else height
     ggsave(paste0(prefix, "_", nm, ".png"),
-           plot = run$plots[[nm]],
-           width = width, height = h, dpi = dpi, bg = "white")
+           plot   = run$plots[[nm]],
+           width  = width,
+           height = h,
+           dpi    = dpi,
+           bg     = "white")
     message("Saved: ", basename(paste0(prefix, "_", nm, ".png")))
   }
   invisible(NULL)
 }
 
-## 2x2 combined panel (requires patchwork)
-combine_plots <- function(run, title = NULL) {
+## ── 2×2 combined panel at poster size ───────────────────────
+## Pass save_path to also write a PNG in one call.
+## Default canvas: 32 × 22 in at 300 dpi — two 16-in panels side-by-side.
+combine_plots <- function(run,
+                          title      = NULL,
+                          save_path  = NULL,   # e.g. "figures/combined.png"
+                          width      = 32,     # was not configurable before
+                          height     = 22,
+                          dpi        = 300) {
+
   if (!requireNamespace("patchwork", quietly = TRUE))
     stop("Install patchwork:  install.packages('patchwork')")
+
   p        <- run$plots
   combined <- (p$p1_relative_survival | p$p2_unconditional_survival) /
-    (p$p3_approach2_fit   | p$p4_blend_weights)
+    (p$p3_approach2_fit    | p$p4_blend_weights)
+
   if (!is.null(title))
     combined <- combined + patchwork::plot_annotation(
       title = title,
       theme = theme(plot.title = element_text(
-        size = 18, face = "bold", colour = "#004C7D",
-        hjust = 0.5, family = "Arial"))
+        size   = 28,           # was 18
+        face   = "bold",
+        colour = "#004C7D",
+        hjust  = 0.5,
+        family = "Arial"))
     )
+
+  if (!is.null(save_path)) {
+    ggsave(save_path, plot = combined,
+           width = width, height = height, dpi = dpi, bg = "white")
+    message("Saved combined panel: ", save_path)
+  }
+
   combined
 }
 
@@ -841,11 +880,17 @@ if (FALSE) {
   run_lt$plots$p2_unconditional_survival
   run_lt$plots$p3_approach2_fit        # stacked main + residual
   run_lt$plots$p4_blend_weights
+  run_lt$plots$p5_survival_overview
 
-  ## 2x2 panel
+  ## 2×2 panel (display only)
   combine_plots(run_lt, title = "Melanoma — AIC | Lifetime")
 
-  ## Save all 4 PNGs at 300 dpi
+  ## 2×2 panel + save in one call
+  combine_plots(run_lt,
+                title     = "Melanoma — AIC | Lifetime",
+                save_path = "figures/melanoma_combined.png")
+
+  ## Save all 5 individual PNGs at 300 dpi / 16×10 in
   save_run_plots(run_lt, outdir = "figures/")
 
   ## Sweep across all horizons and stack results
